@@ -2,6 +2,8 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
+const port = process.env.PORT || 3000;  //PORT is the environment variable used & set by Heroku automatically
+
 //create new express app
 const app = express();
 
@@ -18,9 +20,9 @@ app.use((req,res,next) => {
   next();
 });
 
-app.use((req,res,next) => {  //used for when the site is under maintenance/construction
-  res.render('maintenance.hbs');
-});
+// app.use((req,res,next) => {  //used for when the site is under maintenance/construction
+//   res.render('maintenance.hbs');
+// });
 
 app.use(express.static(__dirname + '/public')); //use built-in middleware for Static website that doesnt require backend
 
@@ -62,6 +64,6 @@ app.get('/bad', (req, res) => {
 });
 
 //bind the App to a port on our machine
-app.listen(3000, () => {
-  console.log('Server is running on port 3000'); //lets you know the server is up
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`); //lets you know the server is up
 });
