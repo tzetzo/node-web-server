@@ -63,6 +63,13 @@ app.get('/bad', (req, res) => {
   });
 });
 
+app.get('/projects', (req, res) => {
+  res.render('projects.hbs',{  //Template to be used & data to be passed to the template
+     pageTitle: 'Projects'
+    // welcomeMessage: 'Welcome Tzvetan! Have a nice day!'
+  });
+});
+
 //bind the App to a port on our machine
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`); //lets you know the server is up
