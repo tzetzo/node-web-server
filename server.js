@@ -10,7 +10,7 @@ const app = express();
 hbs.registerPartials(__dirname + '/views/partials');  //add support for partials
 app.set('view engine', 'hbs');  //using the express template engine Handlebars/Mustache for Dynamic websites
 
-app.use((req,res,next) => {
+app.use((req,res,next) => { //will log all requests coming to the server
   const now = new Date().toString();
   const log = `${now}: ${req.method} ${req.url}`;
   //console.log(log);
@@ -20,11 +20,12 @@ app.use((req,res,next) => {
   next();
 });
 
+//middleware where we avoid calling next(); this will stop everything after it from execution
 // app.use((req,res,next) => {  //used for when the site is under maintenance/construction
 //   res.render('maintenance.hbs');
 // });
 
-app.use(express.static(__dirname + '/public')); //use built-in middleware for Static website that doesnt require backend
+app.use(express.static(__dirname + '/public')); //use built-in express middleware for Static website that doesnt require backend; __dirname stores the path to your projects directory
 
 hbs.registerHelper('getCurrentYear', () => { //HBS helper; used in templates to return data
   return new Date().getFullYear();
@@ -34,10 +35,11 @@ hbs.registerHelper('screamIt', (text) => {
   return text.toUpperCase();
 });
 
- //setup a handler for HTTP GET request
+//setup a handler for HTTP GET request
 app.get('/', (req, res) => { //always have the URL start with /
-   //res.send('<h1>Hello Express!</h1>');  //what to send back to the browser that made the request
-   // res.send({ //NodeJS auto converts objects send as response to JSON.stringify
+   // res.send('Hello Express!'); //send text; express auto sets Content-Type to text/html in this case;
+   // res.send('<h1>Hello Express!</h1>');  //send html back to the browser that made the request; express auto sets Content-Type to text/html in this case;
+   // res.send({ //send JSON data; NodeJS auto converts objects send as response to JSON with JSON.stringify; express auto sets Content-Type to application/json in this case;
    //   name: 'Tzvetan',
    //   surname: 'Marinov',
    //   likes: [
@@ -51,9 +53,9 @@ app.get('/', (req, res) => { //always have the URL start with /
    });
 });
 
-app.get('/about', (req, res) => { //Template to be used & data to be passed to the template
-  res.render('about.hbs',{
-    pageTitle: 'About Page'
+app.get('/about', (req, res) => {
+  res.render('about.hbs',{  //Template to be rendered
+    pageTitle: 'About Page' //data passed to the template
   });
 });
 
